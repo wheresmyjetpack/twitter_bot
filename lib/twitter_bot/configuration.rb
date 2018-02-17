@@ -1,10 +1,13 @@
+require 'yaml'
 require 'twitter'
 require 'news-api'
 
 module TwitterBot
   module Configuration
-   def client
-     Twitter::REST::Client.new do |config|
+    QUERY_CONFIG = File.expand_path('./config/query.yml')
+
+    def client
+      Twitter::REST::Client.new do |config|
         config.consumer_key = ENV.fetch('CONSUMER_KEY')
         config.consumer_secret = ENV.fetch('CONSUMER_SECRET')
         config.access_token = ENV.fetch('ACCESS_TOKEN')
@@ -17,11 +20,8 @@ module TwitterBot
     end
 
     def query
-      {
-        q: 'trump',
-        language: 'en',
-        country: 'us'
-      }
+      config = YAML.load(File.read(QUERY_CONFIG))
+      Hash[config['parameters'].map { |k, v| [k.to_sym, v] }]
     end
   end
 end
