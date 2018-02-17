@@ -5,7 +5,6 @@ require 'news-api'
 module TwitterBot
   module Configuration
     QUERY_CONFIG = File.expand_path('../../config/query.yml', File.dirname(__FILE__))
-    puts QUERY_CONFIG
 
     def client
       Twitter::REST::Client.new do |config|
